@@ -1,0 +1,42 @@
+# depslib dependency file v1.0
+1727419246 source:d:\amc\main.c
+	<stdio.h>
+	<windows.h>
+	<stdbool.h>
+
+1727726288 source:h:\amc\main.c
+	<stdio.h>
+	<windows.h>
+	<stdbool.h>
+	<time.h>
+
+1727726286 source:h:\amc\animations.c
+	<stdio.h>
+	<windows.h>
+
+1728028102 source:d:\anneauancien\animations.c
+	<stdio.h>
+	<windows.h>
+
+1728024738 source:d:\anneauancien\main.c
+	<stdio.h>
+	<windows.h>
+	<stdbool.h>
+	<time.h>
+
+1728024806 source:d:\anneauancien\backpack.c
+	<stdio.h>
+	<windows.h>
+	<stdbool.h>
+	<time.h>
+
+1728077862 source:h:\anneauancien\animations.c
+	<stdio.h>
+	<windows.h>
+
+1728079372 source:h:\anneauancien\main.c
+	<stdio.h>
+	<windows.h>
+	<stdbool.h>
+	<time.h>
+
