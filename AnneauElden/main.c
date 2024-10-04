@@ -146,6 +146,8 @@ void showItems() {
      }
 }
 
+//TODO: ajouter un systeme ou on aurait besoin d'utiliser une relique pour faire une action
+
 void usePotion(int potion) {
     int stop = 0;
     if (potion > 0) {
@@ -249,7 +251,7 @@ void fight(int pvMob) {
 
 int playerFightPart(int pvMob){
     printf("\nL'ennemi a %d pv !", pvMob);
-            if (spellUnlock = 1){
+            if (spellUnlock == 1){
                 printf("\nComment l'attaquez vous ? | l : light attack / h : heavy attack / c : cast spell |\n");
             } else {
                 printf("\nComment l'attaquez vous ? | l : light attack / h : heavy attack |\n");
@@ -269,7 +271,7 @@ int playerFightPart(int pvMob){
                     return pvMob;
                     break;
                 case 'c':
-                    if (spellUnlock = 1){
+                    if (spellUnlock == 1){
                         dam = castSpell(pvMob);
                         pvMob -= dam;
                         return pvMob;
@@ -302,7 +304,8 @@ int lightAttack(int pvMob){
 
 int heavyAttack(int pvMob){
     srand(time(NULL));
-    int dam = rand()%30 + 1 + 2*nFor;
+    int dam = rand()%20 + 10 + 2*nFor;
+    srand(time(NULL));
     int chance = rand()%3;
     if (chance == 1){
         playerAttackHits(playerX, mobX);
@@ -361,7 +364,7 @@ void p1() {
 // Paragraphe 2
 void p2() {
     system("cls");
-    printf("Sous l'arche, un chevalier massif en armure doree, monte sur un cheval, vous attend. Sans un mot, il attend son prochain adversaire.\n");
+    printf("Sous l'arche, un chevalier massif en armure doree, monte sur un cheval, et vous reconnaissez la Sentinelle de l'Arbre Monde ! Sans un mot, elle attend son prochain adversaire.\n");
     printf("Pour lancer le combat, Appuyer sur 1 ... \n");
     printf("Pour fuir vers un chemin secondaire, Appuyer sur 2 ... \n");
     printf("Si vous voulez ouvrir votre sac a dos, Appuyer sur 3 ... \n");
@@ -381,7 +384,7 @@ void p3() {
 // Paragraphe 4
 void p4() {
     system("cls");
-    printf("Le Chevalier de l'Arbre vous attaque avec violence. Vous etes en plein combat, chaque geste compte.\n");
+    printf("Vous attaquez la Sentinelle de l'Arbre Monde ! \n");
     fight(150);
     Sleep(1000);
     p8();
@@ -424,7 +427,10 @@ void p7() {
 // Paragraphe 8
 void p8() {
     system("cls");
-    printf("Vous terrassez le Chevalier de l'Arbre. Son corps s'effondre et la route est degagee.\n");
+    printf("Vous terrassez La Sentinelle de l'Arbre Monde. Son corps s'effondre et la route est degagee.\n");
+    printf("Vous avez gagner 4 d'xp pour avoir tue la Sentinelle de L'Arbre Monde\n");
+    addNiv(4);
+    Sleep(1000);
     printf("Vous continuez vers l'Arbre-Monde.\n");
     Sleep(1500);
     p9();
