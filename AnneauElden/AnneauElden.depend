@@ -40,3 +40,13 @@
 	<stdbool.h>
 	<time.h>
 
+1728077862 source:h:\anneauelden\animations.c
+	<stdio.h>
+	<windows.h>
+
+1728081138 source:h:\anneauelden\main.c
+	<stdio.h>
+	<windows.h>
+	<stdbool.h>
+	<time.h>
+

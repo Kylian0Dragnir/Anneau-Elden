@@ -150,16 +150,16 @@ void usePotion(int potion) {
     int stop = 0;
     if (potion > 0) {
         for (int i = 0; i < MAX_SLOTS; i++) {
-            if (backpack[i] == 'p') {
+            if (backpack[i] == 'p' && !stop) {
                 potion -= 1;
                 backpack[i] = 'v';
                 pv += 10;
                 setColor(2);
                 printf("Vous avez bue une potion ! Vos PV sont maintenant de %d.\n", pv);
                 setColor(7);
-                Sleep(2000);
+                Sleep(2500);
                 printf("Voulez vous boire une autre potion ? (y/n) : ");
-                while (!stop) {
+                while (1) {
                     char input;
                     scanf(" %c", &input);
                     if(input == 'y') {
@@ -168,6 +168,7 @@ void usePotion(int potion) {
                         break;
                     } else if(input == 'n') {
                         printf("L'histoire continue...\n");
+                        Sleep(1500);
                         stop = 1;
                         break;
                     } else {
@@ -410,10 +411,14 @@ void p6() {
 void p7() {
     system("cls");
     printf("En vous enfoncant plus loin dans les bois, une creature mysterieuse vous tend une embuscade.\n");
+    printf("Tentez-vous de fuir ? (y/n)\n");
+    char input;
+    scanf(" %c", &input);
+    if (input == 'y'){
+        p11();
+    }
     fight(100);
     printf("Vous avez combattu vaillamment, vous apercevez un feu dore au loin et vous vous y dirigez.\n");
-    Sleep(1500);
-    p9();
 }
 
 // Paragraphe 8
@@ -448,7 +453,8 @@ void p10() {
 // Paragraphe 11
 void p11() {
     system("cls");
-    printf("Vous tentez de fuir l'embuscade, mais les creatures vous rattrapent. Dans un dernier souffle, vous sentez leurs griffes percer votre chair.\n");
+    printf("Vous tentez de fuir l'embuscade, mais la creatures vous rattrape.\nDans un dernier souffle, vous sentez ses griffes percer votre chair.\n");
+    Sleep(2000);
     pv = 0;
     checkDeath();
 }
@@ -473,7 +479,7 @@ void p13() {
 void credits() {
     printf("CREDITS :\n");
     printf("Programme : Mermin Kylian\n");
-    printf("Histoire : Mermin Kylian, Novais Amori et Hidetaka Miyazaki\n");
+    printf("Histoire : Mermin Kylian et Hidetaka Miyazaki\n");
     printf("Play Tester : Mermin Kylian, Novais Amori et Leclercq Gabriel\n");
     Sleep(4000);
     exit(0);
