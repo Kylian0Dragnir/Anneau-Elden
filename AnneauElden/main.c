@@ -1,4 +1,4 @@
-// Auteur Mermin Kylian et Novais Amori, Date : 06/09/24
+// Auteur Mermin Kylian, Date : 06/09/24
 
 #include <stdio.h>
 #include <windows.h>
@@ -56,21 +56,6 @@ void p13();
 void p14();
 void credits();
 
-
-int main() {
-    system("cls");
-    char nomHero[30];
-    printf("RULES :\nVos pv sont egaux a 100 + 5 fois votre niveaux de vigeur.\nPour le combat, vous pouvez faire une light Attack ou une heavy Attack,\nvous touchez votre cible a tout les coups avec une light attack mais vous faites de petits degats,\nvous avez 1 chance sur 2 de toucher votre cible avec une heavy Attack mais vous faites des degats considerables.\nPour une light Attack, vous faites entre 1 et 15 degats + votre niveau de force.\nPour une heavy Attack, vous faites entre 1 et 30 degats + 2 fois votre niveau de force.\nVous pouvez debloquer les sorts a un moment de l'histoire mais ils ne sont pas debloque par defaut,\navec un sort vous touchez a chaque fois et vous mettez 2 fois votre niveau en intelligence.\nQuand vous prenez des degats, 2 fois votre niveau de resistance est retire aux degats que vous devriez prendre.\n\n");
-    printf("Entrer votre prenom pour commencer l'aventure: ");
-    scanf("%s", nomHero);
-    system("cls");
-    printf("Bienvenue %s, vous commencez l'aventure avec 2 potions de soin\n\n", nomHero);
-    printf("Vous avez 25 points d'experience a associer a differente stats. (Vigueur/Force/Intelligence/Resistance)\n");
-    addNiv(25);
-    p1();
-    return 0;
-}
-
 void setColor(int color) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
@@ -99,14 +84,14 @@ void addNiv(int xp) {
         xp = 0;
         printf("vous avez maintenant %d niveaux en Vigeur, %d niveaux en Force, %d niveaux en Intelligence et %d niveaux Resistance\n", nVig, nFor, nInt, nRes);
         printf("Vous avez donc %d pv", pv);
-        Sleep(2000);
+        Sleep(3500);
     } else if (xp - nVigP - nForP - nIntP - nResP < 0) {
-        printf("Mmmmh tu as mis un peu trop de niveaux bro, recommence\n");
-        Sleep(1500);
+        printf("Vous avez associe trop de niveaux, recommencez\n");
+        Sleep(2000);
         addNiv(xp);
     } else if (xp - nVigP - nForP - nIntP - nResP > 0) {
-        printf("Il te restait des niveaux a mettre bro, recommence\n");
-        Sleep(1500);
+        printf("Il vous restait des niveaux a mettre, recommencez\n");
+        Sleep(2000);
         addNiv(xp);
     }
 }
@@ -127,7 +112,7 @@ void showItems() {
                 break;
         }
     }
-    printf("Vous avez %d potion(s) et %d relique(s) dans votre sac a dos.\n", potion, relique);
+    printf("Vous avez %d potion(s) de soin et %d relique(s) dans votre sac a dos.\n", potion, relique);
     printf("Voulez vous boire une potion ? (y/n) : ");
     while (1) {
         char input;
@@ -241,20 +226,22 @@ void choice(void (*paraActu)(), void (*para1)(), void (*para2)()){
 void fight(int pvMob) {
         while (pvMob > 0){
             pvMob = playerFightPart(pvMob);
-            printf("C'est maintenant a l'ennemi d'attaquer");
-            Sleep(2000);
-            mobFightPart();
+            if (pvMob > 0) {
+                printf("C'est maintenant a l'ennemi d'attaquer");
+                Sleep(2000);
+                mobFightPart();
+            }
         }
-        printf("\nvous avez battut le monstre");
+        printf("\nvous avez battut le monstre\n");
         Sleep(2000);
 }
 
 int playerFightPart(int pvMob){
     printf("\nL'ennemi a %d pv !", pvMob);
             if (spellUnlock == 1){
-                printf("\nComment l'attaquez vous ? | l : light attack / h : heavy attack / c : cast spell |\n");
+                printf("\nComment l'attaquez vous ? | l : attaque legere / h : attaque lourde / c : lancer un sort |\n");
             } else {
-                printf("\nComment l'attaquez vous ? | l : light attack / h : heavy attack |\n");
+                printf("\nComment l'attaquez vous ? | l : attaque legere / h : attaque lourde |\n");
             }
             int dam = 0;
             char type;
@@ -276,12 +263,12 @@ int playerFightPart(int pvMob){
                         pvMob -= dam;
                         return pvMob;
                     } else {
-                        printf("not unlocked");
+                        printf("Vous n'avez pas encore debloquer cette fonctionalite");
                         return pvMob;
                     }
                     break;
                 default :
-                    printf("ERROR : fight type arguments : 'l', 'h', 's'.");
+                    printf("Non pas ce caractère");
                     break;
             }
 }
@@ -304,7 +291,7 @@ int lightAttack(int pvMob){
 
 int heavyAttack(int pvMob){
     srand(time(NULL));
-    int dam = rand()%20 + 10 + 2*nFor;
+    int dam = rand()%25 + 16 + 2*nFor;
     srand(time(NULL));
     int chance = rand()%3;
     if (chance == 1){
@@ -328,12 +315,19 @@ int castSpell(int pvMob){
 }
 
 void takeDamage(int damage) {
-    pv -= damage - 2*res;
-    setColor(12);
-    printf("Vous avez pris %d degats, il vous reste %d pv\n", damage, pv);
-    setColor(7);
-    checkDeath();
-    Sleep(1500);
+    if (res > damage){
+        printf("L'ennemie vous inflige %d de degats mais vous avez entierement resiste a sont attaque\n", damage);
+        Sleep(1500);
+    } else if (res < damage){
+        pv -= damage - res;
+        setColor(12);
+        printf("Vous avez pris %d degats, il vous reste %d pv\n", damage - res, pv);
+        setColor(7);
+        Sleep(1500);
+        checkDeath();
+        Sleep(1500);
+    }
+
 }
 
 void checkDeath(){
@@ -422,6 +416,8 @@ void p7() {
     }
     fight(100);
     printf("Vous avez combattu vaillamment, vous apercevez un feu dore au loin et vous vous y dirigez.\n");
+    Sleep(2000);
+    p9();
 }
 
 // Paragraphe 8
@@ -452,7 +448,7 @@ void p10() {
     printf("En acceptant l'offre de Sellen, vous apprenez rapidement vos premiers sorts magiques. Vous ressentez un nouveau pouvoir en vous.\n");
     spellUnlock = 1;
     printf("Vous sortez de la caverne pour aller explorer les bois.\n");
-    Sleep(1500);
+    Sleep(3500);
     p7();
 }
 
@@ -460,7 +456,7 @@ void p10() {
 void p11() {
     system("cls");
     printf("Vous tentez de fuir l'embuscade, mais la creatures vous rattrape.\nDans un dernier souffle, vous sentez ses griffes percer votre chair.\n");
-    Sleep(2000);
+    Sleep(3000);
     pv = 0;
     checkDeath();
 }
@@ -470,6 +466,7 @@ void p12() {
     system("cls");
     printf("Vous acceptez l'aide de Melina. Ensemble, vous poursuivez votre voyage vers l'Arbre-Monde.\n");
     printf("Fin de la premiere partie.\n");
+    Sleep(3000);
     credits();
 }
 
@@ -478,6 +475,7 @@ void p13() {
     system("cls");
     printf("Vous choisissez de continuer seul. Le chemin est long et perilleux, mais vous etes resolu a accomplir votre destin.\n");
     printf("Fin de la premiere partie.\n");
+    Sleep(3000);
     credits();
 }
 
@@ -490,3 +488,18 @@ void credits() {
     Sleep(4000);
     exit(0);
 }
+
+int main() {
+    system("cls");
+    char nomHero[30];
+    printf("RULES :\nVos pv sont egaux a 100 + 5 fois votre niveaux de vigeur.\nPour le combat, vous pouvez faire une attaque legere ou une attaque lourde,\nvous touchez votre cible a tout les coups avec une attaque legere mais vous faites de petits degats,\nvous avez 1 chance sur 2 de toucher votre cible avec une attaque lourde mais vous faites des degats considerables.\nPour une attaque legere, vous faites entre 1 et 15 degats + votre niveau de force.\nPour une attaque lourde, vous faites entre 10 et 35 degats + 2 fois votre niveau de force.\nVous pouvez debloquer les sorts a un moment de l'histoire mais ils ne sont pas debloque par defaut,\navec un sort vous touchez a chaque fois et vous mettez 2 fois votre niveau en intelligence.\nQuand vous prenez des degats, votre niveau de resistance est retire aux degats que vous devriez prendre.\n\n");
+    printf("Entrer votre prenom pour commencer l'aventure: ");
+    scanf("%s", nomHero);
+    system("cls");
+    printf("Bienvenue %s, vous commencez l'aventure avec 2 potions de soin\n\n", nomHero);
+    printf("Vous avez 25 points d'experience a associer a differente stats. (Vigueur/Force/Intelligence/Resistance)\n");
+    addNiv(25);
+    p1();
+    return 0;
+}
+
